@@ -51,7 +51,12 @@
   <ul>
 <li><a class="reference internal" href="#">Generate the documentation</a><ul>
 <li><a class="reference internal" href="#install-sphinx">Install Sphinx</a></li>
+<li><a class="reference internal" href="#generate-and-publish-the-html-documentation">Generate and publish the HTML documentation</a><ul>
 <li><a class="reference internal" href="#generate-the-html-documentation">Generate the HTML documentation</a></li>
+<li><a class="reference internal" href="#publish-the-html-documentation-on-b-com-forge-website">Publish the HTML documentation on b-com forge website</a></li>
+<li><a class="reference internal" href="#publish-the-html-documentation-on-github">Publish the HTML documentation on GitHub</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#generate-the-pdf-documentation">Generate the PDF documentation</a></li>
 </ul>
 </li>
@@ -99,22 +104,44 @@ with Sphinx.</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="generate-and-publish-the-html-documentation">
+<h2>Generate and publish the HTML documentation<a class="headerlink" href="#generate-and-publish-the-html-documentation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="generate-the-html-documentation">
-<h2>Generate the HTML documentation<a class="headerlink" href="#generate-the-html-documentation" title="Permalink to this headline">¶</a></h2>
+<h3>Generate the HTML documentation<a class="headerlink" href="#generate-the-html-documentation" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>$ cd docs
 $ make html
 </pre></div>
 </div>
 <p>The HTML doc will be generated in <code class="docutils literal"><span class="pre">_build/html</span></code>. Its entry point will be
 <code class="docutils literal"><span class="pre">_build/html/index.html</span></code>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
+</div>
+<div class="section" id="publish-the-html-documentation-on-b-com-forge-website">
+<h3>Publish the HTML documentation on b-com forge website<a class="headerlink" href="#publish-the-html-documentation-on-b-com-forge-website" title="Permalink to this headline">¶</a></h3>
 <p>If you&#8217;re a b-com developer, you can copy the HTML doc to the
 <code class="docutils literal"><span class="pre">pocnetconfschemaless</span></code> folder of the ROADS project on defacto web site
 with:</p>
-<div class="last highlight-python"><div class="highlight"><pre>$ scp -r _build/html/* forge.b-com.com:/home/groups/ROADS/htdocs/pocnetconfschemaless
+<div class="highlight-python"><div class="highlight"><pre>$ scp -r _build/html/* forge.b-com.com:/home/groups/ROADS/htdocs/pocnetconfschemaless
 </pre></div>
 </div>
+<p>The updated documentation will be available at:
+<a class="reference external" href="https://forge.b-com.com/www/roads/pocnetconfschemaless/">https://forge.b-com.com/www/roads/pocnetconfschemaless/</a></p>
+</div>
+<div class="section" id="publish-the-html-documentation-on-github">
+<h3>Publish the HTML documentation on GitHub<a class="headerlink" href="#publish-the-html-documentation-on-github" title="Permalink to this headline">¶</a></h3>
+<p>A copy of the generated HTML documentation is kept in the
+<a class="reference external" href="https://github.com/b-com/pocnetconfschemaless-docs">pocnetconfschemaless-docs GitHub project</a>. After a documentation update and
+generation, follow these steps to publish the updated documentation on GitHub:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd ~/code/roads
+$ git clone https://github.com/b-com/pocnetconfschemaless-docs.git
+$ cd pocnetconfschemaless-docs
+$ cp -a ~/code/roads/pocnetconfschemaless/docs/_build/html/* .
+$ git add *
+$ git commit
+$ git push origin master
+</pre></div>
+</div>
+<p>The updated documentation will be available at:
+<a class="reference external" href="https://b-com.github.io/pocnetconfschemaless-docs/">https://b-com.github.io/pocnetconfschemaless-docs/</a></p>
 </div>
 </div>
 <div class="section" id="generate-the-pdf-documentation">

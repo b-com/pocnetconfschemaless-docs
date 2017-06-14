@@ -6,6 +6,9 @@
 pocnetconfschemaless documentation
 ==================================
 
+Overview
+--------
+
 pocnetconfschemaless is a proof of concept OpenDaylight application
 that will show you how to read and write the configuration of a NETCONF device
 that does not offer YANG models or whose YANG model cannot be parsed by ODL.
@@ -24,6 +27,16 @@ pocnetconfschemaless has been developed at `b-com`_. It is licensed under the
 
 .. _b-com: https://b-com.com/
 .. _Eclipse Public License v1.0: https://www.eclipse.org/legal/epl-v10.html
+
+Reference
+---------
+
+The present documentation is available on `GitHub`_.
+
+b-com developers can also find it on `b-com forge`_.
+
+.. _GitHub: https://b-com.github.io/pocnetconfschemaless-docs/.
+.. _b-com forge: https://forge.b-com.com/www/roads/pocnetconfschemaless/
 
 User Guide
 ----------

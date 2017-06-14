@@ -12,8 +12,11 @@ Install Sphinx
 
     $ pip install Sphinx
 
+Generate and publish the HTML documentation
+-------------------------------------------
+
 Generate the HTML documentation
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -23,13 +26,37 @@ Generate the HTML documentation
 The HTML doc will be generated in ``_build/html``. Its entry point will be
 ``_build/html/index.html``.
 
-.. note::
+Publish the HTML documentation on b-com forge website
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   If you're a b-com developer, you can copy the HTML doc to the
-   ``pocnetconfschemaless`` folder of the ROADS project on defacto web site
-   with::
+If you're a b-com developer, you can copy the HTML doc to the
+``pocnetconfschemaless`` folder of the ROADS project on defacto web site
+with::
 
-      $ scp -r _build/html/* forge.b-com.com:/home/groups/ROADS/htdocs/pocnetconfschemaless
+   $ scp -r _build/html/* forge.b-com.com:/home/groups/ROADS/htdocs/pocnetconfschemaless
+
+The updated documentation will be available at:
+https://forge.b-com.com/www/roads/pocnetconfschemaless/
+
+Publish the HTML documentation on GitHub
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A copy of the generated HTML documentation is kept in the
+`pocnetconfschemaless-docs GitHub project`_. After a documentation update and
+generation, follow these steps to publish the updated documentation on GitHub::
+
+   $ cd ~/code/roads
+   $ git clone https://github.com/b-com/pocnetconfschemaless-docs.git
+   $ cd pocnetconfschemaless-docs
+   $ cp -a ~/code/roads/pocnetconfschemaless/docs/_build/html/* .
+   $ git add *
+   $ git commit
+   $ git push origin master
+
+.. _pocnetconfschemaless-docs GitHub project: https://github.com/b-com/pocnetconfschemaless-docs
+
+The updated documentation will be available at:
+https://b-com.github.io/pocnetconfschemaless-docs/
 
 Generate the PDF documentation
 ------------------------------

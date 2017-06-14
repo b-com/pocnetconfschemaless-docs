@@ -23,7 +23,8 @@ For b-com developers with access to the internal forge::
 
 For other developers::
 
-   TODO
+   $ mkdir -p ~/code/roads
+   $ git clone https://github.com/b-com/pocnetconfschemaless.git
 
 In the rest of the documentation, we'll assume that the source code can be
 found in ``~/code/roads/pocnetconfschemaless``.
