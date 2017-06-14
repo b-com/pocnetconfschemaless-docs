@@ -1,0 +1,305 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Read the configuration of a mounted NETCONF device &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="next" title="Edit the configuration of a mounted NETCONF device" href="edit_config.html" />
+    <link rel="prev" title="Get the mount point of a NETCONF device" href="mount_point.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="edit_config.html" title="Edit the configuration of a mounted NETCONF device"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mount_point.html" title="Get the mount point of a NETCONF device"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Read the configuration of a mounted NETCONF device</a><ul>
+<li><a class="reference internal" href="#build-a-read-only-transaction">Build a read-only transaction</a></li>
+<li><a class="reference internal" href="#build-a-yang-instance-identifier">Build a YANG instance identifier</a><ul>
+<li><a class="reference internal" href="#example-get-the-hostname-of-a-junos-device">Example: get the hostname of a JunOS device</a></li>
+<li><a class="reference internal" href="#get-the-whole-configuration">Get the whole configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#read-the-configuration">Read the configuration</a></li>
+<li><a class="reference internal" href="#look-for-the-desired-information-in-the-output">Look for the desired information in the output</a></li>
+<li><a class="reference internal" href="#check-for-possible-errors">Check for possible errors</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mount_point.html"
+                        title="previous chapter">Get the mount point of a NETCONF device</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="edit_config.html"
+                        title="next chapter">Edit the configuration of a mounted NETCONF device</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer_guide/read_config.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="read-the-configuration-of-a-mounted-netconf-device">
+<span id="read-config"></span><h1>Read the configuration of a mounted NETCONF device<a class="headerlink" href="#read-the-configuration-of-a-mounted-netconf-device" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="build-a-read-only-transaction">
+<h2>Build a read-only transaction<a class="headerlink" href="#build-a-read-only-transaction" title="Permalink to this headline">¶</a></h2>
+<p>Here we assume that we already have a mount point object, and that it is called
+<code class="docutils literal"><span class="pre">mountPoint</span></code>. The steps needed to get this object are explained in
+<a class="reference internal" href="mount_point.html#get-mount-point"><span>Get the mount point of a NETCONF device</span></a>.</p>
+<p>Building a read-only transaction is done in two steps:</p>
+<ol class="arabic simple">
+<li>Get a DOM data broker from the mount point.</li>
+<li>Get the transaction from the data broker.</li>
+</ol>
+<p>This is shown in the following code example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">final</span> <span class="n">DOMDataBroker</span> <span class="n">dataBroker</span> <span class="o">=</span> <span class="n">mountPoint</span><span class="o">.</span><span class="na">getService</span><span class="o">(</span><span class="n">DOMDataBroker</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+<span class="n">DOMDataReadOnlyTransaction</span> <span class="n">rtx</span> <span class="o">=</span> <span class="n">dataBroker</span><span class="o">.</span><span class="na">newReadOnlyTransaction</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-a-yang-instance-identifier">
+<h2>Build a YANG instance identifier<a class="headerlink" href="#build-a-yang-instance-identifier" title="Permalink to this headline">¶</a></h2>
+<p>NETCONF is able to filter the return of the <code class="docutils literal"><span class="pre">get-config</span></code> operation on
+the device in order to retrieve only a subset of the configuration. This
+capability reduces the amount of data exchanged between the client and the
+device. Besides, it simplifies the work of the client: it is easier to look
+for something in a smaller data set.</p>
+<p>With ODL, NETCONF filtering can be accomplished by passing a YANG instance
+identifier object to the <code class="docutils literal"><span class="pre">read()</span></code> method of the transaction. This identifier
+can be seen as a path to the desired configuration subset.</p>
+<div class="section" id="example-get-the-hostname-of-a-junos-device">
+<h3>Example: get the hostname of a JunOS device<a class="headerlink" href="#example-get-the-hostname-of-a-junos-device" title="Permalink to this headline">¶</a></h3>
+<p>In the configuration of the Juniper router used in this poc, the path to the
+hostname can be shown on the following XML code that only retains the
+hostname and its containers and drops everything else:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;configuration</span> <span class="na">xmlns=</span><span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;system&gt;</span>
+    <span class="nt">&lt;host-name&gt;</span>the-device-hostname<span class="nt">&lt;/host-name&gt;</span>
+  <span class="nt">&lt;/system&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></div>
+</div>
+<p>The following Java code example shows how to build a YANG instance identifier
+to retrieve only the desired configuration subset:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">String</span> <span class="n">JUNOS_NS</span> <span class="o">=</span> <span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="o">;</span>
+
+<span class="n">YangInstanceIdentifier</span> <span class="n">yiid</span> <span class="o">=</span> <span class="n">YangInstanceIdentifier</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">node</span><span class="o">(</span><span class="k">new</span> <span class="n">NodeIdentifier</span><span class="o">(</span><span class="n">QName</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;configuration&quot;</span><span class="o">)))</span>
+    <span class="o">.</span><span class="na">node</span><span class="o">(</span><span class="k">new</span> <span class="n">NodeIdentifier</span><span class="o">(</span><span class="n">QName</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;system&quot;</span><span class="o">)))</span>
+    <span class="o">.</span><span class="na">node</span><span class="o">(</span><span class="k">new</span> <span class="n">NodeIdentifier</span><span class="o">(</span><span class="n">QName</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;host-name&quot;</span><span class="o">)))</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-the-whole-configuration">
+<h3>Get the whole configuration<a class="headerlink" href="#get-the-whole-configuration" title="Permalink to this headline">¶</a></h3>
+<p>In case we want to retrieve the whole configuration, we must use the special
+value <code class="docutils literal"><span class="pre">YangInstanceIdentifier.EMPTY</span></code>.</p>
+</div>
+</div>
+<div class="section" id="read-the-configuration">
+<h2>Read the configuration<a class="headerlink" href="#read-the-configuration" title="Permalink to this headline">¶</a></h2>
+<p>To actually read the configuration, we call the <code class="docutils literal"><span class="pre">read()</span></code> method of the
+transaction created earlier. We give it two parameters:</p>
+<ol class="arabic simple">
+<li>The desired logical datastore (here, the configuration datastore to get
+the running configuration of the device).</li>
+<li>The YANG instance identifier created in the previous step.</li>
+</ol>
+<p>To read the configuration synchronously, i.e. to be block until we get the
+reply, we do:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">Optional</span><span class="o">&lt;</span><span class="n">NormalizedNode</span><span class="o">&lt;?,</span> <span class="o">?&gt;&gt;</span> <span class="n">opt</span> <span class="o">=</span> <span class="n">rtx</span><span class="o">.</span><span class="na">read</span><span class="o">(</span>
+    <span class="n">LogicalDatastoreType</span><span class="o">.</span><span class="na">CONFIGURATION</span><span class="o">,</span> <span class="n">yiid</span><span class="o">).</span><span class="na">checkedGet</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>If we get back to our Juniper example, ODL will send a NETCONF
+message to the device that is similar to:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;rpc</span> <span class="na">message-id=</span><span class="s">&quot;m-0&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;get-config&gt;</span>
+    <span class="nt">&lt;source&gt;</span>
+      <span class="nt">&lt;running/&gt;</span>
+    <span class="nt">&lt;/source&gt;</span>
+    <span class="nt">&lt;filter</span> <span class="na">xmlns:ns0=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span> <span class="na">ns0:type=</span><span class="s">&quot;subtree&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;configuration</span> <span class="na">xmlns=</span><span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;system&gt;</span>
+          <span class="nt">&lt;host-name/&gt;</span>
+        <span class="nt">&lt;/system&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/filter&gt;</span>
+  <span class="nt">&lt;/get-config&gt;</span>
+<span class="nt">&lt;/rpc&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="look-for-the-desired-information-in-the-output">
+<h2>Look for the desired information in the output<a class="headerlink" href="#look-for-the-desired-information-in-the-output" title="Permalink to this headline">¶</a></h2>
+<p>Assuming the device hostname is <code class="docutils literal"><span class="pre">pjunren1</span></code>, the device will reply with
+something similar to:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;rpc-reply</span> <span class="na">xmlns=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span> <span class="na">xmlns:junos=</span><span class="s">&quot;http://xml.juniper.net/junos/14.2R1/junos&quot;</span> <span class="na">message-id=</span><span class="s">&quot;m-0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;data&gt;</span>
+    <span class="nt">&lt;configuration</span> <span class="na">xmlns=</span><span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;system&gt;</span>
+        <span class="nt">&lt;host-name&gt;</span>pjunren1<span class="nt">&lt;/host-name&gt;</span>
+      <span class="nt">&lt;/system&gt;</span>
+    <span class="nt">&lt;/configuration&gt;</span>
+  <span class="nt">&lt;/data&gt;</span>
+<span class="nt">&lt;/rpc-reply&gt;</span>
+</pre></div>
+</div>
+<p>ODL will parse the reply, build a XML DOM object holding the contents of the
+reply, and encapsulate the DOM object in a <code class="docutils literal"><span class="pre">AnyXmlNode</span></code> object.</p>
+<p>To get the DOM object from the reply of the <code class="docutils literal"><span class="pre">read()</span></code> method of the
+transaction, we can do:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="k">if</span> <span class="o">(</span><span class="n">opt</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">AnyXmlNode</span> <span class="n">anyXmlData</span> <span class="o">=</span> <span class="o">(</span><span class="n">AnyXmlNode</span><span class="o">)</span> <span class="n">opt</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+    <span class="n">Node</span> <span class="n">node</span> <span class="o">=</span> <span class="n">anyXmlData</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">getNode</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Then we can use standard Java DOM techniques to extract the hostname from the
+DOM object. For instance:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">String</span> <span class="n">hostname</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+<span class="n">Element</span> <span class="n">root</span> <span class="o">=</span> <span class="o">((</span><span class="n">Document</span><span class="o">)</span> <span class="n">node</span><span class="o">).</span><span class="na">getDocumentElement</span><span class="o">();</span>
+
+<span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">getNodeName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;data&quot;</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">NodeList</span> <span class="n">hostnameNodes</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="na">getElementsByTagName</span><span class="o">(</span><span class="s">&quot;host-name&quot;</span><span class="o">);</span>
+    <span class="n">Node</span> <span class="n">hostnameNode</span> <span class="o">=</span> <span class="n">hostnameNodes</span><span class="o">.</span><span class="na">item</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="n">NodeList</span> <span class="n">childs</span> <span class="o">=</span> <span class="n">hostnameNode</span><span class="o">.</span><span class="na">getChildNodes</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">childs</span><span class="o">.</span><span class="na">getLength</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">Node</span> <span class="n">child</span> <span class="o">=</span> <span class="n">childs</span><span class="o">.</span><span class="na">item</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">child</span> <span class="k">instanceof</span> <span class="n">Text</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">hostname</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="na">getNodeValue</span><span class="o">();</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>In this example, if no text element with tag name <code class="docutils literal"><span class="pre">host-name</span></code> can be found,
+the <code class="docutils literal"><span class="pre">hostname</span></code> variable will remain <code class="docutils literal"><span class="pre">null</span></code>.</p>
+</div>
+<div class="section" id="check-for-possible-errors">
+<h2>Check for possible errors<a class="headerlink" href="#check-for-possible-errors" title="Permalink to this headline">¶</a></h2>
+<p>Using ODL in schemaless mode to read the configuration datastore of a NETCONF
+device and looking for a value in the response can fail in three different ways:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">ReadFailedException</span></code> thrown by the transaction&#8217;s <code class="docutils literal"><span class="pre">read()</span></code> method.</li>
+<li>No data returned by the transaction&#8217;s <code class="docutils literal"><span class="pre">read()</span></code> method.</li>
+<li>Searched value not found in the data returned by the transaction&#8217;s
+<code class="docutils literal"><span class="pre">read()</span></code> method.</li>
+</ol>
+<p>Here is a code skeleton that shows where the different errors can be caught:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="k">try</span> <span class="o">{</span>
+    <span class="n">Optional</span><span class="o">&lt;</span><span class="n">NormalizedNode</span><span class="o">&lt;?,</span> <span class="o">?&gt;&gt;</span> <span class="n">opt</span> <span class="o">=</span> <span class="n">rtx</span><span class="o">.</span><span class="na">read</span><span class="o">(</span>
+            <span class="n">LogicalDatastoreType</span><span class="o">.</span><span class="na">CONFIGURATION</span><span class="o">,</span> <span class="n">yyid</span><span class="o">).</span><span class="na">checkedGet</span><span class="o">();</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">opt</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">AnyXmlNode</span> <span class="n">anyXmlData</span> <span class="o">=</span> <span class="o">(</span><span class="n">AnyXmlNode</span><span class="o">)</span> <span class="n">opt</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="n">Node</span> <span class="n">node</span> <span class="o">=</span> <span class="n">anyXmlData</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">getNode</span><span class="o">();</span>
+        <span class="n">hostname</span> <span class="o">=</span> <span class="n">lookForHostnameInNode</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="kc">null</span> <span class="o">==</span> <span class="n">hostname</span><span class="o">)</span> <span class="o">{</span>
+            <span class="cm">/* error 3: hostname not found */</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="cm">/* error 2: no data returned */</span>
+    <span class="o">}</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ReadFailedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="cm">/* error 1: exception while reading the datastore */</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+    <span class="n">rtx</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="edit_config.html" title="Edit the configuration of a mounted NETCONF device"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mount_point.html" title="Get the mount point of a NETCONF device"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

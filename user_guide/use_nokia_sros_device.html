@@ -1,0 +1,308 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Use pocnetconfschemaless with a Nokia SR OS device &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="next" title="Developer guide overview" href="../developer_guide/overview.html" />
+    <link rel="prev" title="Use pocnetconfschemaless with a Juniper device running JunOS" href="use_junos_device.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../developer_guide/overview.html" title="Developer guide overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="use_junos_device.html" title="Use pocnetconfschemaless with a Juniper device running JunOS"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Use pocnetconfschemaless with a Nokia SR OS device</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#mount-the-device">Mount the device</a></li>
+<li><a class="reference internal" href="#read-the-hostname">Read the hostname</a></li>
+<li><a class="reference internal" href="#write-modify-the-hostname">Write (modify) the hostname</a></li>
+<li><a class="reference internal" href="#re-read-hostname">Re-read hostname</a></li>
+<li><a class="reference internal" href="#unmount-the-device">Unmount the device</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="use_junos_device.html"
+                        title="previous chapter">Use pocnetconfschemaless with a Juniper device running JunOS</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../developer_guide/overview.html"
+                        title="next chapter">Developer guide overview</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/use_nokia_sros_device.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="use-pocnetconfschemaless-with-a-nokia-sr-os-device">
+<h1>Use pocnetconfschemaless with a Nokia SR OS device<a class="headerlink" href="#use-pocnetconfschemaless-with-a-nokia-sr-os-device" title="Permalink to this headline">¶</a></h1>
+<p>In this example, we are working with a Nokia vSIM virtual router running SR
+OS 14.0.R1. We assume that the initial router hostname is PE1, and we
+will read and change that hostname.</p>
+<p>We use the poc by sending RESTConf requests:</p>
+<ul class="simple">
+<li>to ODL netconf configuration service (to mount the device in ODL),</li>
+<li>to the pocnetconfschemaless service (to read and write the device hostname).</li>
+</ul>
+<p>In the examples, we assume that the RESTConf client (eg Firefox with the
+RESTClient plugin) is on the same machine as ODL. We will connect to ODL
+with the default credentials: login <code class="docutils literal"><span class="pre">admin</span></code> and the password <code class="docutils literal"><span class="pre">admin</span></code>.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>On the router:</p>
+<ul class="simple">
+<li>NETCONF must be enabled</li>
+<li>The <code class="docutils literal"><span class="pre">admin</span></code> user must be authorized to perform NETCONF locks</li>
+</ul>
+</div>
+<div class="section" id="mount-the-device">
+<h2>Mount the device<a class="headerlink" href="#mount-the-device" title="Permalink to this headline">¶</a></h2>
+<p>We choose to call the mount point <code class="docutils literal"><span class="pre">vnokren1</span></code> (shortcut for virtual Nokia
+device located in Rennes number 1). The following RESTConf requests mounts
+the device in ODL:</p>
+<div class="highlight-python"><div class="highlight"><pre>PUT http://localhost:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/vnokren1
+Content-Type: application/xml
+Accept: application/xml
+&lt;node xmlns=&quot;urn:TBD:params:xml:ns:yang:network-topology&quot;&gt;
+  &lt;node-id&gt;vnokren1&lt;/node-id&gt;
+  &lt;host xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;10.51.0.115&lt;/host&gt;
+  &lt;port xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;830&lt;/port&gt;
+  &lt;username xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;admin&lt;/username&gt;
+  &lt;password xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;admin&lt;/password&gt;
+  &lt;tcp-only xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;false&lt;/tcp-only&gt;
+
+  &lt;schemaless xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;true&lt;/schemaless&gt;
+
+  &lt;non-module-capabilities xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;
+    &lt;override&gt;true&lt;/override&gt;
+
+    &lt;capability&gt;urn:ietf:params:netconf:base:1.0&lt;/capability&gt;
+    &lt;capability&gt;urn:ietf:params:netconf:base:1.1&lt;/capability&gt;
+    &lt;capability&gt;urn:ietf:params:netconf:capability:candidate:1.0&lt;/capability&gt;
+    &lt;capability&gt;urn:ietf:params:netconf:capability:validate:1.0&lt;/capability&gt;
+    &lt;capability&gt;urn:ietf:params:netconf:capability:validate:1.1&lt;/capability&gt;
+    &lt;capability&gt;urn:ietf:params:netconf:capability:startup:1.0&lt;/capability&gt;
+  &lt;/non-module-capabilities&gt;
+&lt;/node&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will need to adapt the <code class="docutils literal"><span class="pre">host</span></code>, <code class="docutils literal"><span class="pre">username</span></code> and <code class="docutils literal"><span class="pre">password</span></code>
+fields to match your device configuration.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For a Nokia device, we use the <code class="docutils literal"><span class="pre">&lt;non-module-capabilities&gt;</span></code> container to
+override the capabilities of the device. This is to work around an issue
+with the NETCONF implementation of Nokia devices running SR OS.</p>
+<p>SR OS announces two NETCONF capabilities related to the way the
+NETCONF client must interact with the device configuration datastores:
+<code class="docutils literal"><span class="pre">writable-running</span></code> and <code class="docutils literal"><span class="pre">candidate</span></code>. The former means that the running
+configuration (ie the current configuration) can be edited and will be
+effective immediately after edition. The latter
+means that the candidate configuration (ie a draft configuration) can be
+edited and will be validated with the <code class="docutils literal"><span class="pre">commit</span></code> operation.</p>
+<p>Normally, according to <span class="target" id="index-0"></span><a class="rfc reference external" href="https://tools.ietf.org/html/rfc6241.html"><strong>RFC 6241</strong></a>, each datastore should have
+its own lock. But on Nokia devices, only one lock protects the two
+datastores. Taking one lock will take both locks. ODL is not aware of this
+proprietary behaviour: when editing the
+configuration, ODL will attempt to acquire both locks. The first attempt
+will succeed, but the second one will fail. In the end, the configuration
+change will not go well.</p>
+<p class="last">Here, we override the device capabilities to only retain the <code class="docutils literal"><span class="pre">candidate</span></code>
+capability. Consequently, ODL will only try to acquire the lock for the
+candidate configuration datastore.</p>
+</div>
+<p>ODL replies with HTTP code <code class="docutils literal"><span class="pre">201</span> <span class="pre">Created</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">netconf:list-devices</span></code> karaf command allows us to confirm that the
+vnokren1 device is mounted:</p>
+<div class="highlight-python"><div class="highlight"><pre>opendaylight-user@root&gt;netconf:list-devices
+NETCONF ID        | NETCONF IP  | NETCONF Port | Status
+----------------------------------------------------------
+vnokren1          | 10.51.0.115 | 830          | connected
+controller-config | 127.0.0.1   | 1830         | connected
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-the-hostname">
+<h2>Read the hostname<a class="headerlink" href="#read-the-hostname" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>POST http://localhost:8181/restconf/operations/pocnetconfschemaless:get-hostname
+Content-Type: application/yang.data+json
+Accept: application/json
+{
+    &quot;input&quot;: {
+        &quot;node-id&quot;: &quot;vnokren1&quot;,
+        &quot;device-family&quot;: &quot;nokia&quot;
+    }
+}
+</pre></div>
+</div>
+<p>pocnetconftesttool replies with the following contents:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;output&quot;</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;hostname&quot;</span> <span class="p">:</span> <span class="s2">&quot;PE1&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-modify-the-hostname">
+<h2>Write (modify) the hostname<a class="headerlink" href="#write-modify-the-hostname" title="Permalink to this headline">¶</a></h2>
+<p>We will rename the device <code class="docutils literal"><span class="pre">PE1-new</span></code> with:</p>
+<div class="highlight-python"><div class="highlight"><pre>POST http://localhost:8181/restconf/operations/pocnetconfschemaless:set-hostname
+Content-Type: application/yang.data+json
+Accept: application/json
+{
+    &quot;input&quot;: {
+        &quot;node-id&quot;: &quot;vnokren1&quot;,
+        &quot;device-family&quot;: &quot;nokia&quot;,
+        &quot;hostname&quot;: &quot;PE1-new&quot;
+    }
+}
+</pre></div>
+</div>
+<p>ODL replies with HTTP code <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code>.</p>
+<p>In ODL logs, we can see (among others) the following NETCONF message:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;rpc message-id=&quot;m-3&quot; xmlns=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;&gt;
+&lt;edit-config&gt;
+&lt;target&gt;
+&lt;candidate/&gt;
+&lt;/target&gt;
+&lt;config&gt;
+&lt;configure xmlns=&quot;urn:nokia.com:sros:ns:yang:sr:conf&quot;&gt;
+&lt;system xmlns=&quot;urn:nokia.com:sros:ns:yang:sr:conf-system&quot;&gt;
+&lt;name&gt;PE1-new&lt;/name&gt;
+&lt;/system&gt;
+&lt;/configure&gt;
+&lt;/config&gt;
+&lt;/edit-config&gt;
+&lt;/rpc&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="re-read-hostname">
+<h2>Re-read hostname<a class="headerlink" href="#re-read-hostname" title="Permalink to this headline">¶</a></h2>
+<p>As earlier, we ask for the hostname with:</p>
+<div class="highlight-python"><div class="highlight"><pre>POST http://localhost:8181/restconf/operations/pocnetconfschemaless:get-hostname
+Content-Type: application/yang.data+json
+Accept: application/json
+{
+    &quot;input&quot;: {
+        &quot;node-id&quot;: &quot;vnokren1&quot;,
+        &quot;device-family&quot;: &quot;nokia&quot;
+    }
+}
+</pre></div>
+</div>
+<p>This time, pocnetconftesttool replies with the new hostname:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+     <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;PE1-new&quot;</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unmount-the-device">
+<h2>Unmount the device<a class="headerlink" href="#unmount-the-device" title="Permalink to this headline">¶</a></h2>
+<p>When we have finished to work with the device, we can unmount it with the
+following RESTConf request:</p>
+<div class="highlight-python"><div class="highlight"><pre>DELETE http://localhost:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/vnokren1
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../developer_guide/overview.html" title="Developer guide overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="use_junos_device.html" title="Use pocnetconfschemaless with a Juniper device running JunOS"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

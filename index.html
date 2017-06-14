@@ -1,0 +1,264 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pocnetconfschemaless documentation &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="#" />
+    <link rel="next" title="Build pocnetconfschemaless" href="user_guide/build.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="user_guide/build.html" title="Build pocnetconfschemaless"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pocnetconfschemaless documentation</a><ul>
+<li><a class="reference internal" href="#user-guide">User Guide</a></li>
+<li><a class="reference internal" href="#developer-guide">Developer guide</a></li>
+<li><a class="reference internal" href="#opendaylight-issues">OpenDaylight issues</a></li>
+<li><a class="reference internal" href="#documentation-developer-guide">Documentation developer guide</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="user_guide/build.html"
+                        title="next chapter">Build pocnetconfschemaless</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pocnetconfschemaless-documentation">
+<h1>pocnetconfschemaless documentation<a class="headerlink" href="#pocnetconfschemaless-documentation" title="Permalink to this headline">¶</a></h1>
+<p>pocnetconfschemaless is a proof of concept OpenDaylight application
+that will show you how to read and write the configuration of a NETCONF device
+that does not offer YANG models or whose YANG model cannot be parsed by ODL.</p>
+<p>The poc will allow you to read and write the hostname of a variety of NETCONF
+devices:</p>
+<ul class="simple">
+<li>netconf-testtool (NETCONF device simulator provided by ODL),</li>
+<li>Juniper MX5 routers,</li>
+<li>Nokia vSIM virtual routers.</li>
+</ul>
+<p>pocnetconfschemaless has been developed at <a class="reference external" href="https://b-com.com/">b-com</a>. It is licensed under the
+<a class="reference external" href="https://www.eclipse.org/legal/epl-v10.html">Eclipse Public License v1.0</a>.</p>
+<div class="section" id="user-guide">
+<h2>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/build.html">Build pocnetconfschemaless</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/build.html#get-pocnetconfschemaless-code">Get pocnetconfschemaless code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/build.html#build-pocnetconfschemaless-a-first-time">Build pocnetconfschemaless... a first time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/build.html#get-patch-and-build-odl-netconf-project">Get, patch and build ODL netconf project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/build.html#re-build-pocnetconfschemaless">Re-build pocnetconfschemaless</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/start.html">Start pocnetconfschemaless</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/use_netconf_testtool.html">Use pocnetconfschemaless with netconf-testtool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_netconf_testtool.html#start-netconf-testtool">Start netconf-testtool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_netconf_testtool.html#mount-the-netconf-testtool-device">Mount the netconf-testtool device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_netconf_testtool.html#read-the-hostname">Read the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_netconf_testtool.html#write-the-hostname">Write the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_netconf_testtool.html#re-read-the-hostname">Re-read the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_netconf_testtool.html#unmount-the-netconf-testtool-device">Unmount the netconf-testtool device</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/use_junos_device.html">Use pocnetconfschemaless with a Juniper device running JunOS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_junos_device.html#mount-the-device">Mount the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_junos_device.html#read-the-hostname">Read the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_junos_device.html#change-the-hostname">Change the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_junos_device.html#re-read-the-hostname">Re-read the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_junos_device.html#unmount-the-device">Unmount the device</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/use_nokia_sros_device.html">Use pocnetconfschemaless with a Nokia SR OS device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_nokia_sros_device.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_nokia_sros_device.html#mount-the-device">Mount the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_nokia_sros_device.html#read-the-hostname">Read the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_nokia_sros_device.html#write-modify-the-hostname">Write (modify) the hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_nokia_sros_device.html#re-read-hostname">Re-read hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/use_nokia_sros_device.html#unmount-the-device">Unmount the device</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="developer-guide">
+<h2>Developer guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/overview.html">Developer guide overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/overview.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/overview.html#outline">Outline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/overview.html#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/overview.html#read-the-configuration-datastore">Read the configuration datastore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/overview.html#change-the-configuration-datastore">Change the configuration datastore</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/dependencies.html">ODL Dependencies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/dependencies.html#impl">impl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/dependencies.html#pom-xml">pom.xml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/dependencies.html#blueprint">blueprint</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/dependencies.html#features">features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/dependencies.html#id1">pom.xml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/dependencies.html#features-xml">features.xml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/mount_point.html">Get the mount point of a NETCONF device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/read_config.html">Read the configuration of a mounted NETCONF device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/read_config.html#build-a-read-only-transaction">Build a read-only transaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/read_config.html#build-a-yang-instance-identifier">Build a YANG instance identifier</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/read_config.html#example-get-the-hostname-of-a-junos-device">Example: get the hostname of a JunOS device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/read_config.html#get-the-whole-configuration">Get the whole configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/read_config.html#read-the-configuration">Read the configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/read_config.html#look-for-the-desired-information-in-the-output">Look for the desired information in the output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/read_config.html#check-for-possible-errors">Check for possible errors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/edit_config.html">Edit the configuration of a mounted NETCONF device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/edit_config.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/edit_config.html#create-the-configuration-snippet">Create the configuration snippet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/edit_config.html#create-the-yang-instance-identifier">Create the YANG instance identifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/edit_config.html#build-a-write-only-transaction">Build a write-only transaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/edit_config.html#merge-the-configuration-snippet">Merge the configuration snippet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/edit_config.html#submit-the-transaction">Submit the transaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/edit_config.html#check-for-possible-errors">Check for possible errors</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="opendaylight-issues">
+<h2>OpenDaylight issues<a class="headerlink" href="#opendaylight-issues" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="odl_issues/01_bad_transformer.html">ODL Issue 1: bad RPC structure transformer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="odl_issues/01_bad_transformer.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odl_issues/01_bad_transformer.html#the-problem-in-detail">The problem in detail</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="odl_issues/01_bad_transformer.html#reproduce-the-problem">Reproduce the problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="odl_issues/01_bad_transformer.html#karaf-log-analysis">karaf log analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="odl_issues/01_bad_transformer.html#problem-correction">Problem correction</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="documentation-developer-guide">
+<h2>Documentation developer guide<a class="headerlink" href="#documentation-developer-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/build_the_docs.html">Generate the documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/build_the_docs.html#install-sphinx">Install Sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/build_the_docs.html#generate-the-html-documentation">Generate the HTML documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/build_the_docs.html#generate-the-pdf-documentation">Generate the PDF documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="user_guide/build.html" title="Build pocnetconfschemaless"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

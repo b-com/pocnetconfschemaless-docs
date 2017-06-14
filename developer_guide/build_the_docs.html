@@ -1,0 +1,168 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Generate the documentation &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="prev" title="ODL Issue 1: bad RPC structure transformer" href="../odl_issues/01_bad_transformer.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../odl_issues/01_bad_transformer.html" title="ODL Issue 1: bad RPC structure transformer"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Generate the documentation</a><ul>
+<li><a class="reference internal" href="#install-sphinx">Install Sphinx</a></li>
+<li><a class="reference internal" href="#generate-the-html-documentation">Generate the HTML documentation</a></li>
+<li><a class="reference internal" href="#generate-the-pdf-documentation">Generate the PDF documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../odl_issues/01_bad_transformer.html"
+                        title="previous chapter">ODL Issue 1: bad RPC structure transformer</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer_guide/build_the_docs.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="generate-the-documentation">
+<h1>Generate the documentation<a class="headerlink" href="#generate-the-documentation" title="Permalink to this headline">¶</a></h1>
+<p>pocnetconfschemaless documentation is written in reStructuredText text files
+using Sphinx extensions. The HTML version of the documentation can be generated
+with Sphinx.</p>
+<div class="section" id="install-sphinx">
+<h2>Install Sphinx<a class="headerlink" href="#install-sphinx" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install Sphinx
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-the-html-documentation">
+<h2>Generate the HTML documentation<a class="headerlink" href="#generate-the-html-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>$ cd docs
+$ make html
+</pre></div>
+</div>
+<p>The HTML doc will be generated in <code class="docutils literal"><span class="pre">_build/html</span></code>. Its entry point will be
+<code class="docutils literal"><span class="pre">_build/html/index.html</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you&#8217;re a b-com developer, you can copy the HTML doc to the
+<code class="docutils literal"><span class="pre">pocnetconfschemaless</span></code> folder of the ROADS project on defacto web site
+with:</p>
+<div class="last highlight-python"><div class="highlight"><pre>$ scp -r _build/html/* forge.b-com.com:/home/groups/ROADS/htdocs/pocnetconfschemaless
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="generate-the-pdf-documentation">
+<h2>Generate the PDF documentation<a class="headerlink" href="#generate-the-pdf-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In its current form, the PDF-generated documentation is not good looking
+(incomplete table of contents, truncated code examples, ...)</p>
+</div>
+<p>If you want to generate pocnetconfschemaless doc as a PDF document, you&#8217;ll
+need to install extra dependencies. Under Ubuntu 16.04:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ sudo apt install texlive texlive-latex-extra
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">texlive-latex-extra</span></code> provides the <code class="docutils literal"><span class="pre">titlesec.sty</span></code> file which is needed
+by Sphinx.</p>
+</div>
+<p>You&#8217;ll build the PDF file with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ make latexpdf
+</pre></div>
+</div>
+<p>You&#8217;ll find the file in <code class="docutils literal"><span class="pre">_build/latex/pocnetconfschemaless.pdf</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../odl_issues/01_bad_transformer.html" title="ODL Issue 1: bad RPC structure transformer"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

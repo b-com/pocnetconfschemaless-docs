@@ -1,0 +1,316 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Use pocnetconfschemaless with netconf-testtool &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="next" title="Use pocnetconfschemaless with a Juniper device running JunOS" href="use_junos_device.html" />
+    <link rel="prev" title="Start pocnetconfschemaless" href="start.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="use_junos_device.html" title="Use pocnetconfschemaless with a Juniper device running JunOS"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="start.html" title="Start pocnetconfschemaless"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Use pocnetconfschemaless with netconf-testtool</a><ul>
+<li><a class="reference internal" href="#start-netconf-testtool">Start netconf-testtool</a></li>
+<li><a class="reference internal" href="#mount-the-netconf-testtool-device">Mount the netconf-testtool device</a></li>
+<li><a class="reference internal" href="#read-the-hostname">Read the hostname</a></li>
+<li><a class="reference internal" href="#write-the-hostname">Write the hostname</a></li>
+<li><a class="reference internal" href="#re-read-the-hostname">Re-read the hostname</a></li>
+<li><a class="reference internal" href="#unmount-the-netconf-testtool-device">Unmount the netconf-testtool device</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="start.html"
+                        title="previous chapter">Start pocnetconfschemaless</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="use_junos_device.html"
+                        title="next chapter">Use pocnetconfschemaless with a Juniper device running JunOS</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/use_netconf_testtool.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="use-pocnetconfschemaless-with-netconf-testtool">
+<h1>Use pocnetconfschemaless with netconf-testtool<a class="headerlink" href="#use-pocnetconfschemaless-with-netconf-testtool" title="Permalink to this headline">¶</a></h1>
+<p>Instead of a real network device, pocnetconfschemaless can work with the
+NETCONF device simulator provided by ODL netconf project: netconf-testtool.</p>
+<p>We use the poc by sending RESTConf requests:</p>
+<ul class="simple">
+<li>to ODL netconf configuration service (to mount the device in ODL),</li>
+<li>to the pocnetconfschemaless service (to read and write the device hostname).</li>
+</ul>
+<p>In the examples, we assume that the RESTConf client (eg Firefox with the
+RESTClient plugin) is on the same machine as ODL. We will connect to ODL
+with the default credentials: login <code class="docutils literal"><span class="pre">admin</span></code> and the password <code class="docutils literal"><span class="pre">admin</span></code>.</p>
+<div class="section" id="start-netconf-testtool">
+<h2>Start netconf-testtool<a class="headerlink" href="#start-netconf-testtool" title="Permalink to this headline">¶</a></h2>
+<p>For the needs of the poc, we wrote a small YANG module that describes the
+structure of the configuration used by netconf-testtool. The contents of that
+YANG module can be seen with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cat ~/code/roads/pocnetconfschemaless/netconf-testtool-config/yang-hostname-v2/hostname@2017-03-31.yang
+module hostname {
+    yang-version 1;
+    namespace &quot;urn:opendaylight:hostname&quot;;
+    prefix &quot;hn&quot;;
+
+    revision &quot;2017-03-31&quot;;
+
+    container system {
+        leaf hostname {
+            type string;
+        }
+        leaf location {
+            type string;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>You&#8217;ll start netconf-testtool with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd ~/code/roads/pocnetconfschemaless/netconf-testtool-config
+$ java -jar ~/code/opendaylight/netconf/netconf/tools/netconf-testtool/target/netconf-testtool-1.2.0-Carbon-executable.jar \
+    --schemas-dir yang-hostname-v2/  --debug true
+</pre></div>
+</div>
+</div>
+<div class="section" id="mount-the-netconf-testtool-device">
+<span id="mount-netconf-testtool"></span><h2>Mount the netconf-testtool device<a class="headerlink" href="#mount-the-netconf-testtool-device" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>PUT http://localhost:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/netconf-testtool
+Content-Type: application/xml
+Accept: application/xml
+&lt;node xmlns=&quot;urn:TBD:params:xml:ns:yang:network-topology&quot;&gt;
+  &lt;node-id&gt;netconf-testtool&lt;/node-id&gt;
+  &lt;host xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;127.0.0.1&lt;/host&gt;
+  &lt;port xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;17830&lt;/port&gt;
+  &lt;username xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;admin&lt;/username&gt;
+  &lt;password xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;admin&lt;/password&gt;
+  &lt;tcp-only xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;false&lt;/tcp-only&gt;
+  &lt;schemaless xmlns=&quot;urn:opendaylight:netconf-node-topology&quot;&gt;true&lt;/schemaless&gt;
+&lt;/node&gt;
+</pre></div>
+</div>
+<p>ODL replies with HTTP status code <code class="docutils literal"><span class="pre">201</span> <span class="pre">Created</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">netconf:list-devices</span></code> karaf command will allow you to confirm that the
+netconf-testtool device is mounted and connected:</p>
+<div class="highlight-python"><div class="highlight"><pre>opendaylight-user@root&gt;netconf:list-devices
+NETCONF ID        | NETCONF IP | NETCONF Port | Status
+---------------------------------------------------------
+netconf-testtool  | 127.0.0.1  | 17830        | connected
+controller-config | 127.0.0.1  | 1830         | connected
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-the-hostname">
+<h2>Read the hostname<a class="headerlink" href="#read-the-hostname" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>POST http://localhost:8181/restconf/operations/pocnetconfschemaless:get-hostname
+Content-Type: application/yang.data+json
+Accept: application/json
+{
+    &quot;input&quot;: {
+        &quot;node-id&quot;: &quot;netconf-testtool&quot;
+    }
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In all the calls to <code class="docutils literal"><span class="pre">get-hostname</span></code> et <code class="docutils literal"><span class="pre">set-hostname</span></code>, we could add the
+NETCONF device family with <code class="docutils literal"><span class="pre">&quot;device-family&quot;:</span> <span class="pre">&quot;netconf-testtool&quot;</span></code>.</p>
+<p class="last">Actually, this is not necessary because this is the default value.</p>
+</div>
+<p>Since the hostname is not defined yet, pocnetconftesttool replies with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+     <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;[noname4]&quot;</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-the-hostname">
+<h2>Write the hostname<a class="headerlink" href="#write-the-hostname" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This test requires a fix in ODL netconf project (see
+<a class="reference internal" href="../odl_issues/01_bad_transformer.html#issue-bad-transformer"><span>ODL Issue 1: bad RPC structure transformer</span></a>). The fix is already enabled if you followed
+the instructions in <a class="reference internal" href="build.html#patch-netconf"><span>Get, patch and build ODL netconf project</span></a>.</p>
+</div>
+<p>The following example shows how to set the hostname to the <code class="docutils literal"><span class="pre">ntt</span></code> value:</p>
+<div class="highlight-python"><div class="highlight"><pre>POST http://localhost:8181/restconf/operations/pocnetconfschemaless:set-hostname
+Content-Type: application/yang.data+json
+Accept: application/json
+{
+    &quot;input&quot;: {
+        &quot;node-id&quot;: &quot;netconf-testtool&quot;
+        &quot;hostname&quot;: &quot;ntt&quot;
+    }
+}
+</pre></div>
+</div>
+<p>ODL replies with HTTP status code <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code>.</p>
+<p>In netconf-testtool logs and ODL logs, we can see (among others) the following
+NETCONF message:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;rpc xmlns=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot; message-id=&quot;m-4&quot;&gt;
+&lt;edit-config&gt;
+&lt;target&gt;
+&lt;candidate/&gt;
+&lt;/target&gt;
+&lt;default-operation&gt;none&lt;/default-operation&gt;
+&lt;config&gt;
+&lt;system xmlns=&quot;urn:opendaylight:hostname&quot;&gt;
+&lt;hostname xmlns:ns0=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot; ns0:operation=&quot;replace&quot;&gt;ntt&lt;/hostname&gt;
+&lt;/system&gt;
+&lt;/config&gt;
+&lt;/edit-config&gt;
+&lt;/rpc&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="re-read-the-hostname">
+<h2>Re-read the hostname<a class="headerlink" href="#re-read-the-hostname" title="Permalink to this headline">¶</a></h2>
+<p>As during the first read, we can do:</p>
+<div class="highlight-python"><div class="highlight"><pre>POST http://localhost:8181/restconf/operations/pocnetconfschemaless:get-hostname
+Content-Type: application/yang.data+json
+Accept: application/json
+{
+    &quot;input&quot;: {
+        &quot;node-id&quot;: &quot;netconf-testtool&quot;
+    }
+}
+</pre></div>
+</div>
+<p>This time, pocnetconftesttool replies with the following contents:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+     <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;ntt&quot;</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In netconf-testtool tools, we can see that ODL requests the device configuration
+with the following NETCONF message:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;rpc xmlns=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot; message-id=&quot;m-7&quot;&gt;
+&lt;get-config&gt;
+&lt;source&gt;
+&lt;running/&gt;
+&lt;/source&gt;
+&lt;/get-config&gt;
+&lt;/rpc&gt;
+</pre></div>
+</div>
+<p>netconf-testtool replies with:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;rpc-reply xmlns=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot; message-id=&quot;m-7&quot;&gt;
+&lt;data&gt;
+&lt;system xmlns=&quot;urn:opendaylight:hostname&quot;&gt;
+&lt;hostname xmlns:ns0=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot; ns0:operation=&quot;replace&quot;&gt;ntt&lt;/hostname&gt;
+&lt;/system&gt;
+&lt;/data&gt;
+&lt;/rpc-reply&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="unmount-the-netconf-testtool-device">
+<h2>Unmount the netconf-testtool device<a class="headerlink" href="#unmount-the-netconf-testtool-device" title="Permalink to this headline">¶</a></h2>
+<p>When you have finished to work with the device, you can unmount it with the
+following RESTConf request:</p>
+<div class="highlight-python"><div class="highlight"><pre>DELETE http://localhost:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/netconf-testtool
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="use_junos_device.html" title="Use pocnetconfschemaless with a Juniper device running JunOS"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="start.html" title="Start pocnetconfschemaless"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

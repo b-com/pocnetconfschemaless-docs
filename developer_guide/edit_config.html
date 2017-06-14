@@ -1,0 +1,389 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Edit the configuration of a mounted NETCONF device &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="next" title="ODL Issue 1: bad RPC structure transformer" href="../odl_issues/01_bad_transformer.html" />
+    <link rel="prev" title="Read the configuration of a mounted NETCONF device" href="read_config.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../odl_issues/01_bad_transformer.html" title="ODL Issue 1: bad RPC structure transformer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="read_config.html" title="Read the configuration of a mounted NETCONF device"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Edit the configuration of a mounted NETCONF device</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#create-the-configuration-snippet">Create the configuration snippet</a></li>
+<li><a class="reference internal" href="#create-the-yang-instance-identifier">Create the YANG instance identifier</a></li>
+<li><a class="reference internal" href="#build-a-write-only-transaction">Build a write-only transaction</a></li>
+<li><a class="reference internal" href="#merge-the-configuration-snippet">Merge the configuration snippet</a></li>
+<li><a class="reference internal" href="#submit-the-transaction">Submit the transaction</a></li>
+<li><a class="reference internal" href="#check-for-possible-errors">Check for possible errors</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="read_config.html"
+                        title="previous chapter">Read the configuration of a mounted NETCONF device</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../odl_issues/01_bad_transformer.html"
+                        title="next chapter">ODL Issue 1: bad RPC structure transformer</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer_guide/edit_config.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="edit-the-configuration-of-a-mounted-netconf-device">
+<span id="edit-config"></span><h1>Edit the configuration of a mounted NETCONF device<a class="headerlink" href="#edit-the-configuration-of-a-mounted-netconf-device" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>We will illustrate how to edit the configuration of a mounted NETCONF device
+by showing how to change the hostname of a Juniper NETCONF device.</p>
+<p>On such a device, as already seen in the <a class="reference internal" href="read_config.html#read-config"><span>Read the configuration of a mounted NETCONF device</span></a> section, the value
+of the hostname can be found under the <code class="docutils literal"><span class="pre">configuration/system/host-name</span></code>
+tag hierarchy (or path):</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;configuration</span> <span class="na">xmlns=</span><span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;system&gt;</span>
+    <span class="nt">&lt;host-name&gt;</span>the-device-hostname<span class="nt">&lt;/host-name&gt;</span>
+  <span class="nt">&lt;/system&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></div>
+</div>
+<p>In order to change the hostname to <code class="docutils literal"><span class="pre">new-hostname</span></code>, we will:</p>
+<ol class="arabic simple">
+<li>Create a DOM document holding the <code class="docutils literal"><span class="pre">&lt;host-name&gt;new-hostname&lt;/host-name&gt;</span></code>
+configuration snippet, and encapsulate that document in a <code class="docutils literal"><span class="pre">AnyXmlNode</span></code>
+object.</li>
+<li>Create a YANG instance identifier holding the <code class="docutils literal"><span class="pre">configuration/system/host-name</span></code>
+path that represents the insertion point of the configuration snippet.</li>
+<li>Create a write-only transaction</li>
+<li>Merge the <code class="docutils literal"><span class="pre">AnyXmlNode</span></code> object at the insertion point identified by
+the YANG instance identifier</li>
+<li>Submit the transaction</li>
+</ol>
+</div>
+<div class="section" id="create-the-configuration-snippet">
+<h2>Create the configuration snippet<a class="headerlink" href="#create-the-configuration-snippet" title="Permalink to this headline">¶</a></h2>
+<p>The following example shows how to create a DOM document holding the
+<code class="docutils literal"><span class="pre">&lt;host-name&gt;new-hostname&lt;/host-name&gt;</span></code> configuration snippet using the
+standard Java DOM APIs. This is a straightforward code that does not show
+exception handling:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">javax.xml.parsers.DocumentBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.xml.parsers.DocumentBuilderFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.w3c.dom.Document</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.w3c.dom.Element</span><span class="o">;</span>
+
+<span class="c1">// ...</span>
+
+<span class="n">DocumentBuilderFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="n">DocumentBuilderFactory</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+<span class="n">factory</span><span class="o">.</span><span class="na">setNamespaceAware</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">factory</span><span class="o">.</span><span class="na">setCoalescing</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">factory</span><span class="o">.</span><span class="na">setIgnoringElementContentWhitespace</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">factory</span><span class="o">.</span><span class="na">setIgnoringComments</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+<span class="n">DocumentBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">newDocumentBuilder</span><span class="o">();</span>
+
+<span class="c1">// ...</span>
+
+<span class="n">String</span> <span class="n">JUNOS_NS</span> <span class="o">=</span> <span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="o">;</span>
+
+<span class="n">Document</span> <span class="n">doc</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">newDocument</span><span class="o">();</span>
+<span class="n">Element</span> <span class="n">hostnameElement</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="na">createElementNS</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;host-name&quot;</span><span class="o">);</span>
+<span class="n">doc</span><span class="o">.</span><span class="na">appendChild</span><span class="o">(</span><span class="n">hostnameElement</span><span class="o">);</span>
+<span class="n">hostnameElement</span><span class="o">.</span><span class="na">appendChild</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">createTextNode</span><span class="o">(</span><span class="s">&quot;new-hostname&quot;</span><span class="o">));</span>
+</pre></div>
+</div>
+<p>Then we need to encapsulate that document in a <code class="docutils literal"><span class="pre">AnyXmlNode</span></code> object:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">AnyXmlNode</span> <span class="n">anyXmlNode</span> <span class="o">=</span> <span class="n">Builders</span><span class="o">.</span><span class="na">anyXmlBuilder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">withNodeIdentifier</span><span class="o">(</span><span class="k">new</span> <span class="n">YangInstanceIdentifier</span><span class="o">.</span><span class="na">NodeIdentifier</span><span class="o">(</span>
+            <span class="n">QName</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;host-name&quot;</span><span class="o">),</span>
+    <span class="o">.</span><span class="na">withValue</span><span class="o">(</span><span class="k">new</span> <span class="n">DOMSource</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">getDocumentElement</span><span class="o">()))</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-yang-instance-identifier">
+<h2>Create the YANG instance identifier<a class="headerlink" href="#create-the-yang-instance-identifier" title="Permalink to this headline">¶</a></h2>
+<p>We need to build a YANG instance identifier to point to the place where the
+configuration must be merged in the device configuration datastore.</p>
+<p>In our example, the YANG instance identifier must code the path
+<code class="docutils literal"><span class="pre">configuration/system/host-name</span></code> with the proper namespace. Here is a
+code example that does just that:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">YangInstanceIdentifier</span> <span class="n">yiid</span> <span class="o">=</span> <span class="n">YangInstanceIdentifier</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">node</span><span class="o">(</span><span class="k">new</span> <span class="n">NodeIdentifier</span><span class="o">(</span><span class="n">QName</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;configuration&quot;</span><span class="o">)))</span>
+    <span class="o">.</span><span class="na">node</span><span class="o">(</span><span class="k">new</span> <span class="n">NodeIdentifier</span><span class="o">(</span><span class="n">QName</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;system&quot;</span><span class="o">)))</span>
+    <span class="o">.</span><span class="na">node</span><span class="o">(</span><span class="k">new</span> <span class="n">NodeIdentifier</span><span class="o">(</span><span class="n">QName</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">JUNOS_NS</span><span class="o">,</span> <span class="s">&quot;host-name&quot;</span><span class="o">)))</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-a-write-only-transaction">
+<h2>Build a write-only transaction<a class="headerlink" href="#build-a-write-only-transaction" title="Permalink to this headline">¶</a></h2>
+<p>Here we assume that we already have a mount point object, and that it is called
+<code class="docutils literal"><span class="pre">mountPoint</span></code>. The steps needed to get this object are explained in
+<a class="reference internal" href="mount_point.html#get-mount-point"><span>Get the mount point of a NETCONF device</span></a>.</p>
+<p>Building a write-only transaction is done in two steps:</p>
+<ol class="arabic simple">
+<li>Get a DOM data broker from the mount point.</li>
+<li>Get the transaction from the data broker.</li>
+</ol>
+<p>This is shown in the following code example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">final</span> <span class="n">DOMDataBroker</span> <span class="n">dataBroker</span> <span class="o">=</span> <span class="n">mountPoint</span><span class="o">.</span><span class="na">getService</span><span class="o">(</span><span class="n">DOMDataBroker</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+<span class="n">DOMDataWriteTransaction</span> <span class="n">writeTransaction</span> <span class="o">=</span> <span class="n">dataBroker</span><span class="o">.</span><span class="na">newWriteOnlyTransaction</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The act of creating a write-only transaction locks the datastore on the
+NETCONF device. ODL sends a message such as:</p>
+<div class="last highlight-xml"><div class="highlight"><pre><span class="nt">&lt;rpc</span> <span class="na">message-id=</span><span class="s">&quot;m-21&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;lock&gt;</span>
+    <span class="nt">&lt;target&gt;</span>
+      <span class="nt">&lt;candidate/&gt;</span>
+    <span class="nt">&lt;/target&gt;</span>
+  <span class="nt">&lt;/lock&gt;</span>
+<span class="nt">&lt;/rpc&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="merge-the-configuration-snippet">
+<h2>Merge the configuration snippet<a class="headerlink" href="#merge-the-configuration-snippet" title="Permalink to this headline">¶</a></h2>
+<p>To actually edit the configuration of the NETCONF device, we call
+the <code class="docutils literal"><span class="pre">merge()</span></code> method of the write-only transaction
+created earlier. We give it three parameters:</p>
+<ol class="arabic simple">
+<li>The desired logical datastore (here, the configuration datastore).</li>
+<li>The YANG instance identifier created in the previous step.</li>
+<li>The configuration snippet encapsulated in a <code class="docutils literal"><span class="pre">AnyXmlNode</span></code>.</li>
+</ol>
+<p>Example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">writeTransaction</span><span class="o">.</span><span class="na">merge</span><span class="o">(</span><span class="n">LogicalDatastoreType</span><span class="o">.</span><span class="na">CONFIGURATION</span><span class="o">,</span> <span class="n">yiid</span><span class="o">,</span> <span class="n">anyXmlNode</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>In our example, ODL will send a NETCONF message to the device that is similar
+to:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;rpc</span> <span class="na">message-id=</span><span class="s">&quot;m-22&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;edit-config&gt;</span>
+    <span class="nt">&lt;target&gt;</span>
+      <span class="nt">&lt;candidate/&gt;</span>
+    <span class="nt">&lt;/target&gt;</span>
+    <span class="nt">&lt;config&gt;</span>
+      <span class="nt">&lt;configuration</span> <span class="na">xmlns=</span><span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;system&gt;</span>
+          <span class="nt">&lt;host-name&gt;</span>new-hostname<span class="nt">&lt;/host-name&gt;</span>
+        <span class="nt">&lt;/system&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/config&gt;</span>
+  <span class="nt">&lt;/edit-config&gt;</span>
+<span class="nt">&lt;/rpc&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When we call the <code class="docutils literal"><span class="pre">merge()</span></code> method of the write-only transaction, ODL
+generates an <code class="docutils literal"><span class="pre">edit-config</span></code> NETCONF message whose <code class="docutils literal"><span class="pre">operation</span></code> attribute
+has the default value which is <code class="docutils literal"><span class="pre">merge</span></code>. In this case:</p>
+<ul class="simple">
+<li>everything found in the configuration snippet not found in the device
+configuration is created in the device configuration,</li>
+<li>everything found in the device configuration but not found in the
+configuration snippet is left unchanged in the device configuration,</li>
+<li>everything found in the configuration snippet and found the device
+configuration is replaced in the device configuration with the values in
+the configuration snippet.</li>
+</ul>
+<p>Alternatively, we could have used the <code class="docutils literal"><span class="pre">put()</span></code> method of the write-only
+transaction. In this case, ODL generates an <code class="docutils literal"><span class="pre">edit-config</span></code> NETCONF message
+where the <code class="docutils literal"><span class="pre">operation</span></code> attribute of the configuration snippet has the
+value <code class="docutils literal"><span class="pre">replace</span></code>. In turn, the device should replace everything found
+at the location of the configuration snippet by the configuration snippet,
+potentially removing some configuration elements not found in the
+configuration snippet.</p>
+<p>Here is an example of a NETCONF message sent by ODL when we use the
+<code class="docutils literal"><span class="pre">put()</span></code> method:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;rpc</span> <span class="na">message-id=</span><span class="s">&quot;m-32&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;edit-config&gt;</span>
+    <span class="nt">&lt;target&gt;</span>
+      <span class="nt">&lt;candidate/&gt;</span>
+    <span class="nt">&lt;/target&gt;</span>
+    <span class="nt">&lt;default-operation&gt;</span>none<span class="nt">&lt;/default-operation&gt;</span>
+    <span class="nt">&lt;config&gt;</span>
+      <span class="nt">&lt;configuration</span> <span class="na">xmlns=</span><span class="s">&quot;http://xml.juniper.net/xnm/1.1/xnm&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;system&gt;</span>
+          <span class="nt">&lt;host-name</span> <span class="na">xmlns:ns0=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span>
+                     <span class="na">ns0:operation=</span><span class="s">&quot;replace&quot;</span><span class="nt">&gt;</span>new-hostname<span class="nt">&lt;/host-name&gt;</span>
+        <span class="nt">&lt;/system&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/config&gt;</span>
+  <span class="nt">&lt;/edit-config&gt;</span>
+<span class="nt">&lt;/rpc&gt;</span>
+</pre></div>
+</div>
+<p class="last">This mode does not work with our Juniper device, so we did not use it.</p>
+</div>
+</div>
+<div class="section" id="submit-the-transaction">
+<h2>Submit the transaction<a class="headerlink" href="#submit-the-transaction" title="Permalink to this headline">¶</a></h2>
+<p>In order to actually apply the new configuration on the device, we have to
+call the <code class="docutils literal"><span class="pre">submit()</span></code> method of the write-only transaction. Example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">final</span> <span class="n">CheckedFuture</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">,</span> <span class="n">TransactionCommitFailedException</span><span class="o">&gt;</span> <span class="n">submit</span> <span class="o">=</span> <span class="n">writeTransaction</span><span class="o">.</span><span class="na">submit</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>In our example, ODL will send a NETCONF commit message to the device such as:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;rpc</span> <span class="na">message-id=</span><span class="s">&quot;m-35&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;commit/&gt;</span>
+<span class="nt">&lt;/rpc&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">submit()</span></code> method is asynchronous.</p>
+<p>In order to get a synchronous behaviour, we can do:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="k">try</span> <span class="o">{</span>
+   <span class="n">submit</span><span class="o">.</span><span class="na">checkedGet</span><span class="o">();</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">TransactionCommitFailedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+   <span class="cm">/* handle exception */</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Alternatively, we can keep the asynchronous behaviour in our code and let ODL
+block until completion after the return of our RPC implementation. In our
+example, we do this by returning a <code class="docutils literal"><span class="pre">Future&lt;RpcResult&lt;Void&gt;&gt;</span></code> object with:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="k">return</span> <span class="n">Futures</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">submit</span><span class="o">,</span> <span class="k">new</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">,</span> <span class="n">RpcResult</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;&gt;()</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">RpcResult</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">apply</span><span class="o">(</span><span class="kd">final</span> <span class="n">Void</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+       <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;config writtent to &#39;{}&#39;&quot;</span><span class="o">,</span> <span class="n">nodeId</span><span class="o">);</span>
+       <span class="k">return</span> <span class="n">SUCCESS</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+<p>The problem with this alternate approach is that we do not know how to handle
+gracefully exceptions that arise during the commit. For instance, if the device
+is unmounted between the retrieval of the mount point and the call to
+<code class="docutils literal"><span class="pre">submit()</span></code>, the user will get an obnoxious error.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>At some point, ODL will release the lock on the device datastore. In ODL
+logs, we can see the sending of a NETCONF message such as:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;rpc</span> <span class="na">message-id=</span><span class="s">&quot;m-36&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;unlock&gt;</span>
+    <span class="nt">&lt;target&gt;</span>
+      <span class="nt">&lt;candidate/&gt;</span>
+    <span class="nt">&lt;/target&gt;</span>
+  <span class="nt">&lt;/unlock&gt;</span>
+<span class="nt">&lt;/rpc&gt;</span>
+</pre></div>
+</div>
+<p>With the <code class="docutils literal"><span class="pre">checkedGet()</span></code> approach, we observe that the message is sent
+during the execution of <code class="docutils literal"><span class="pre">checkedGet()</span></code>.</p>
+<p class="last">With the alternate approach, we observe that the message is sent after the
+<code class="docutils literal"><span class="pre">apply()</span></code> callback has been called.</p>
+</div>
+</div>
+<div class="section" id="check-for-possible-errors">
+<h2>Check for possible errors<a class="headerlink" href="#check-for-possible-errors" title="Permalink to this headline">¶</a></h2>
+<p>Using ODL in schemaless mode to edit the configuration datastore of a NETCONF
+device can fail in several different ways:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">IllegalArgumentException</span></code> may be thrown by the code that gets the mount
+point when the NETCONF device is not mounted in ODL.</li>
+<li><code class="docutils literal"><span class="pre">IllegalStateException</span></code> may be thrown at the retrieval of the data broker.</li>
+<li><code class="docutils literal"><span class="pre">TransactionCommitFailedException</span></code> may be thrown while waiting for the
+commit operation to complete.</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../odl_issues/01_bad_transformer.html" title="ODL Issue 1: bad RPC structure transformer"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="read_config.html" title="Read the configuration of a mounted NETCONF device"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

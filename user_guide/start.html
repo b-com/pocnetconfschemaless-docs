@@ -1,0 +1,150 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Start pocnetconfschemaless &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="next" title="Use pocnetconfschemaless with netconf-testtool" href="use_netconf_testtool.html" />
+    <link rel="prev" title="Build pocnetconfschemaless" href="build.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="use_netconf_testtool.html" title="Use pocnetconfschemaless with netconf-testtool"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="build.html" title="Build pocnetconfschemaless"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="build.html"
+                        title="previous chapter">Build pocnetconfschemaless</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="use_netconf_testtool.html"
+                        title="next chapter">Use pocnetconfschemaless with netconf-testtool</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/start.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="start-pocnetconfschemaless">
+<h1>Start pocnetconfschemaless<a class="headerlink" href="#start-pocnetconfschemaless" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python"><div class="highlight"><pre>$ cd ~/code/roads/pocnetconfschemaless/karaf/target/assembly
+$ bin/karaf
+opendaylight-user@root&gt;log:set TRACE org.opendaylight.netconf.sal
+opendaylight-user@root&gt;log:set TRACE com.bcom
+opendaylight-user@root&gt;feature:install odl-pocnetconfschemaless-ui
+opendaylight-user@root&gt;feature:install odl-netconf-console
+opendaylight-user@root&gt;log:tail
+</pre></div>
+</div>
+<p>ODL is ready when the logs show a line that looks like:</p>
+<div class="highlight-python"><div class="highlight"><pre>2017-05-31 18:28:10,114 | INFO  | config-pusher    | ConfigPusherImpl                 | 131 - org.opendaylight.controller.config-persister-impl - 0.6.0.Carbon | Successfully pushed configuration snapshot 04-xsql.xml(odl-pocnetconfschemaless-ui,odl-pocnetconfschemaless-ui)
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><code class="docutils literal"><span class="pre">odl-pocnetconf-schemaless-*</span></code> and <code class="docutils literal"><span class="pre">odl-netconf-*</span></code> features must
+not be installed automatically at the start of karaf, and this is the default
+behaviour of pocnetconfschemaless. Else, because of a bug, the SSH connection
+will not establish with some network devices such as netconf-testool or the
+Juniper MX5 router.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is not necessary to install <code class="docutils literal"><span class="pre">odl-netconf-console</span></code> to use the
+poc. However, it is useful to see the connection state of ODL and the mounted
+NETCONF devices.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">log:set</span> <span class="pre">TRACE</span> <span class="pre">org.opendaylight.netconf.sal</span></code> command allows to
+see the NETCONF message sent and received by ODL in ODL logs.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="use_netconf_testtool.html" title="Use pocnetconfschemaless with netconf-testtool"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="build.html" title="Build pocnetconfschemaless"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

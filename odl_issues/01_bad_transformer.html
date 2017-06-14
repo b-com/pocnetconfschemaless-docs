@@ -1,0 +1,230 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ODL Issue 1: bad RPC structure transformer &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="next" title="Generate the documentation" href="../developer_guide/build_the_docs.html" />
+    <link rel="prev" title="Edit the configuration of a mounted NETCONF device" href="../developer_guide/edit_config.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../developer_guide/build_the_docs.html" title="Generate the documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../developer_guide/edit_config.html" title="Edit the configuration of a mounted NETCONF device"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ODL Issue 1: bad RPC structure transformer</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#the-problem-in-detail">The problem in detail</a><ul>
+<li><a class="reference internal" href="#reproduce-the-problem">Reproduce the problem</a></li>
+<li><a class="reference internal" href="#karaf-log-analysis">karaf log analysis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#problem-correction">Problem correction</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../developer_guide/edit_config.html"
+                        title="previous chapter">Edit the configuration of a mounted NETCONF device</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../developer_guide/build_the_docs.html"
+                        title="next chapter">Generate the documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/odl_issues/01_bad_transformer.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="odl-issue-1-bad-rpc-structure-transformer">
+<span id="issue-bad-transformer"></span><h1>ODL Issue 1: bad RPC structure transformer<a class="headerlink" href="#odl-issue-1-bad-rpc-structure-transformer" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In OpenDaylight netconf project, when a device is mounted with the
+<code class="docutils literal"><span class="pre">schemaless</span></code> option and when we try to edit its configuration,
+NetconfRpcStructureTransformer is called
+instead of SchemalessRpcStructureTransformer. ODL looks for the device schema
+matching the namespace in the XML DOM that we built. This schema does not
+exist, so ODL generates an exception.</p>
+<p>I hit that bug in Boron. As of 2017-05-04, the bug is still present in Carbon.</p>
+</div>
+<div class="section" id="the-problem-in-detail">
+<h2>The problem in detail<a class="headerlink" href="#the-problem-in-detail" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="reproduce-the-problem">
+<h3>Reproduce the problem<a class="headerlink" href="#reproduce-the-problem" title="Permalink to this headline">¶</a></h3>
+<p>We want to send the following configuration snippet in a NETCONF edit-config
+message to netconf-testtool:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;system xmlns=&quot;urn:opendaylight:hostname&quot;&gt;
+&lt;hostname xmlns:ns0=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot; ns0:operation=&quot;replace&quot;&gt;ntt&lt;/hostname&gt;
+&lt;/system&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="karaf-log-analysis">
+<h3>karaf log analysis<a class="headerlink" href="#karaf-log-analysis" title="Permalink to this headline">¶</a></h3>
+<p>karaf log shows the following exception:</p>
+<div class="highlight-python"><div class="highlight"><pre>java.lang.NullPointerException: Cannot find (urn:opendaylight:hostname)system node in schema context. Instance identifier has to start from root
+        at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:250)[65:com.google.guava:18.0.0]
+        at org.opendaylight.yangtools.yang.data.impl.schema.ImmutableNodes.fromInstanceId(ImmutableNodes.java:134)[81:org.opendaylight.yangtools.yang-data-impl:1.1.0.SNAPSHOT]
+        at org.opendaylight.netconf.sal.connect.netconf.util.NetconfMessageTransformUtil.createEditConfigAnyxml(NetconfMessageTransformUtil.java:294)
+        at org.opendaylight.netconf.sal.connect.netconf.util.NetconfRpcStructureTransformer.createEditConfigStructure(NetconfRpcStructureTransformer.java:39)
+        at org.opendaylight.netconf.sal.connect.netconf.util.NetconfBaseOps.createEditConfigStrcture(NetconfBaseOps.java:257)
+        at org.opendaylight.netconf.sal.connect.netconf.sal.tx.AbstractWriteTx.put(AbstractWriteTx.java:103)
+        at com.bcom.pocnetconfschemaless.impl.Hostname.setHostname(Hostname.java:297)
+        at com.bcom.pocnetconfschemaless.impl.PocnetconfschemalessImpl.setHostname(PocnetconfschemalessImpl.java:35)
+</pre></div>
+</div>
+<p>It shows that netconf in ODL uses <code class="docutils literal"><span class="pre">NetconfRpcStructureTransformer</span></code> to
+generate the XML that will be sent to the device. It looks for the schema
+matching the namespace in the configuration snippet. It should not look for a
+schema because we are in schemaless mode. Instead, it should use
+<code class="docutils literal"><span class="pre">SchemalessRpcStructureTransformer</span></code> that takes what it is given and does not
+use any schema.</p>
+</div>
+</div>
+<div class="section" id="problem-correction">
+<h2>Problem correction<a class="headerlink" href="#problem-correction" title="Permalink to this headline">¶</a></h2>
+<p>The correction consists in fixing the code run by ODL when it mounts a netconf
+device and that is used to know whether the device must operate in schemaless
+mode or not.</p>
+<p>Here is the patch, developed for Boron and still applying for Carbon:</p>
+<div class="highlight-python"><div class="highlight"><pre>diff --git a/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/sal/KeepaliveSalFacade.java b/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/sal/KeepaliveSalFacade.java
+index c450ac6..4026c38 100644
+--- a/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/sal/KeepaliveSalFacade.java
++++ b/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/sal/KeepaliveSalFacade.java
+@@ -260,9 +260,9 @@ public final class KeepaliveSalFacade implements RemoteDeviceHandler&lt;NetconfSess
+      * DOMRpcService proxy that attaches reset-keepalive-task and schedule
+      * request-timeout-task to each RPC invocation.
+      */
+-    private static final class KeepaliveDOMRpcService implements DOMRpcService {
++    public static final class KeepaliveDOMRpcService implements DOMRpcService {
+
+-        private final DOMRpcService deviceRpc;
++        public final DOMRpcService deviceRpc;
+         private ResetKeepalive resetKeepaliveTask;
+         private final long defaultRequestTimeoutMillis;
+         private final ScheduledExecutorService executor;
+diff --git a/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/util/NetconfBaseOps.java b/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/util/NetconfBaseOps.java
+index de61ee9..1b37015 100644
+--- a/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/util/NetconfBaseOps.java
++++ b/netconf/sal-netconf-connector/src/main/java/org/opendaylight/netconf/sal/connect/netconf/util/NetconfBaseOps.java
+@@ -35,6 +35,7 @@ import com.google.common.util.concurrent.Futures;
+ import com.google.common.util.concurrent.ListenableFuture;
+ import org.opendaylight.controller.md.sal.dom.api.DOMRpcResult;
+ import org.opendaylight.controller.md.sal.dom.api.DOMRpcService;
++import org.opendaylight.netconf.sal.connect.netconf.sal.KeepaliveSalFacade;
+ import org.opendaylight.netconf.sal.connect.netconf.sal.SchemalessNetconfDeviceRpc;
+ import org.opendaylight.yang.gen.v1.urn.ietf.params.xml.ns.netconf.base._1._0.rev110601.copy.config.input.target.ConfigTarget;
+ import org.opendaylight.yang.gen.v1.urn.ietf.params.xml.ns.netconf.base._1._0.rev110601.edit.config.input.EditContent;
+@@ -63,7 +64,15 @@ public final class NetconfBaseOps {
+     public NetconfBaseOps(final DOMRpcService rpc, final SchemaContext schemaContext) {
+         this.rpc = rpc;
+         this.schemaContext = schemaContext;
+-        if (rpc instanceof SchemalessNetconfDeviceRpc) {
++
++        boolean schemaless = false;
++        if (rpc instanceof KeepaliveSalFacade.KeepaliveDOMRpcService) {
++            KeepaliveSalFacade.KeepaliveDOMRpcService rpc2 = (KeepaliveSalFacade.KeepaliveDOMRpcService) rpc;
++            if (rpc2.deviceRpc instanceof SchemalessNetconfDeviceRpc) {
++                schemaless = true;
++            }
++        }
++        if (schemaless) {
+             this.transformer = new SchemalessRpcStructureTransformer();
+         } else {
+             this.transformer = new NetconfRpcStructureTransformer(schemaContext);
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../developer_guide/build_the_docs.html" title="Generate the documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../developer_guide/edit_config.html" title="Edit the configuration of a mounted NETCONF device"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>

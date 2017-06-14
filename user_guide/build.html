@@ -1,0 +1,217 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Build pocnetconfschemaless &mdash; pocnetconfschemaless 0.1.0-SNAPSHOT documentation</title>
+    
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="top" title="pocnetconfschemaless 0.1.0-SNAPSHOT documentation" href="../index.html" />
+    <link rel="next" title="Start pocnetconfschemaless" href="start.html" />
+    <link rel="prev" title="pocnetconfschemaless documentation" href="../index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="start.html" title="Start pocnetconfschemaless"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="pocnetconfschemaless documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Build pocnetconfschemaless</a><ul>
+<li><a class="reference internal" href="#get-pocnetconfschemaless-code">Get pocnetconfschemaless code</a></li>
+<li><a class="reference internal" href="#build-pocnetconfschemaless-a-first-time">Build pocnetconfschemaless... a first time</a></li>
+<li><a class="reference internal" href="#get-patch-and-build-odl-netconf-project">Get, patch and build ODL netconf project</a></li>
+<li><a class="reference internal" href="#re-build-pocnetconfschemaless">Re-build pocnetconfschemaless</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">pocnetconfschemaless documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="start.html"
+                        title="next chapter">Start pocnetconfschemaless</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/build.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="build-pocnetconfschemaless">
+<h1>Build pocnetconfschemaless<a class="headerlink" href="#build-pocnetconfschemaless" title="Permalink to this headline">¶</a></h1>
+<p>The present version of pocnetconfschemaless is based on OpenDaylight Carbon
+release.</p>
+<p>In order to use the poc, you&#8217;ll need to patch ODL netconf project to fix a
+blocking bug.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following instructions mention directories for pocnetconfschemaless
+code and for ODL netconf code. These are just conventions used at b-com.
+You may place the code wherever you like.</p>
+</div>
+<div class="section" id="get-pocnetconfschemaless-code">
+<h2>Get pocnetconfschemaless code<a class="headerlink" href="#get-pocnetconfschemaless-code" title="Permalink to this headline">¶</a></h2>
+<p>For b-com developers with access to the internal forge:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mkdir -p ~/code/roads
+$ git clone ssh://gitolite@forge.b-com.com/roads/SANDBOX/pocnetconfschemaless.git
+</pre></div>
+</div>
+<p>For other developers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TODO</span>
+</pre></div>
+</div>
+<p>In the rest of the documentation, we&#8217;ll assume that the source code can be
+found in <code class="docutils literal"><span class="pre">~/code/roads/pocnetconfschemaless</span></code>.</p>
+</div>
+<div class="section" id="build-pocnetconfschemaless-a-first-time">
+<h2>Build pocnetconfschemaless... a first time<a class="headerlink" href="#build-pocnetconfschemaless-a-first-time" title="Permalink to this headline">¶</a></h2>
+<p>You&#8217;ll build pocnetconfschemaless a first time using the maven artifacts
+provided by ODL. It will allow you to get all the needed dependencies and
+cache them in <code class="docutils literal"><span class="pre">~/.m2/repository</span></code>. But you&#8217;ll get the buggy netconf artifacts:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd ~/code/roads/pocnetconfschemaless
+$ mvn clean install -DskipTests
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">pocnetconfschemaless tests usually pass at build time. However, they may
+fail in some environments, so you&#8217;ll have better luck with <code class="docutils literal"><span class="pre">-DskipTests</span></code>.</p>
+</div>
+</div>
+<div class="section" id="get-patch-and-build-odl-netconf-project">
+<span id="patch-netconf"></span><h2>Get, patch and build ODL netconf project<a class="headerlink" href="#get-patch-and-build-odl-netconf-project" title="Permalink to this headline">¶</a></h2>
+<p>You&#8217;ll get netconf code from ODL GitHub mirror and work on the
+<code class="docutils literal"><span class="pre">release/carbon</span></code> tag with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mkdir -p ~/code/opendaylight
+$ git clone https://github.com/opendaylight/netconf.git
+$ cd netconf
+$ git checkout release/carbon
+</pre></div>
+</div>
+<p>Then you&#8217;ll apply the bugfix patches with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd ~/code/opendaylight/netconf
+$ git am &lt; ~/code/roads/pocnetconfschemaless/0001-netconf-testtool-accept-RSA-hostname-key.patch
+Applying: netconf-testtool: accept RSA hostname key
+$ git am &lt; ~/code/roads/pocnetconfschemaless/0002-fix-for-schemaless-devices.patch
+Applying: fix for schemaless devices
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The patch <code class="docutils literal"><span class="pre">0001-netconf-testtool-accept-RSA-hostname-key.patch</span></code> is not
+strictly necessary. It permits to connect to <code class="docutils literal"><span class="pre">netconf-testtool</span></code> with
+Ubuntu 16.04 <code class="docutils literal"><span class="pre">ssh</span></code> client, which is sometimes useful but not necessary to
+use the poc. The patch works with Boron and Carbon.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The patch <code class="docutils literal"><span class="pre">0002-fix-for-schemaless-devices.patch</span></code> fixes the issue
+<a class="reference internal" href="../odl_issues/01_bad_transformer.html#issue-bad-transformer"><span>ODL Issue 1: bad RPC structure transformer</span></a>. It will be required until the problem is fixed
+in ODL.</p>
+</div>
+<p>Finally, you&#8217;ll build the patched netconf project and overwrite the
+artifacts in <code class="docutils literal"><span class="pre">~/.m2/repository</span></code> with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd ~/code/opendaylight/netconf
+$ mvn clean install -DskipTests
+</pre></div>
+</div>
+</div>
+<div class="section" id="re-build-pocnetconfschemaless">
+<h2>Re-build pocnetconfschemaless<a class="headerlink" href="#re-build-pocnetconfschemaless" title="Permalink to this headline">¶</a></h2>
+<p>Now you&#8217;ll rebuild pocnetconfschemaless using the newly-generated netconf
+artifacts with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd ~/code/roads/pocnetconfschemaless
+$ mvn clean install -DskipTests
+</pre></div>
+</div>
+<p>You know have a usable karaf distribution in
+<code class="docutils literal"><span class="pre">~/code/roads/pocnetconfschemaless/karaf/target/assembly</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="start.html" title="Start pocnetconfschemaless"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="pocnetconfschemaless documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pocnetconfschemaless 0.1.0-SNAPSHOT documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, b-com.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+    </div>
+  </body>
+</html>
