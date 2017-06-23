@@ -33,10 +33,7 @@ Reference
 
 The present documentation is available on `GitHub`_.
 
-b-com developers can also find it on `b-com forge`_.
-
 .. _GitHub: https://b-com.github.io/pocnetconfschemaless-docs/.
-.. _b-com forge: https://forge.b-com.com/www/roads/pocnetconfschemaless/
 
 User Guide
 ----------

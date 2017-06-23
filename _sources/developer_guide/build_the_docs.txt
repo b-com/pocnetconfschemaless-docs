@@ -26,18 +26,6 @@ Generate the HTML documentation
 The HTML doc will be generated in ``_build/html``. Its entry point will be
 ``_build/html/index.html``.
 
-Publish the HTML documentation on b-com forge website
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you're a b-com developer, you can copy the HTML doc to the
-``pocnetconfschemaless`` folder of the ROADS project on defacto web site
-with::
-
-   $ scp -r _build/html/* forge.b-com.com:/home/groups/ROADS/htdocs/pocnetconfschemaless
-
-The updated documentation will be available at:
-https://forge.b-com.com/www/roads/pocnetconfschemaless/
-
 Publish the HTML documentation on GitHub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

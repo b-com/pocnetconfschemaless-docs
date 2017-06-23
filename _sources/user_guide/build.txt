@@ -16,12 +16,7 @@ blocking bug.
 Get pocnetconfschemaless code
 -----------------------------
 
-For b-com developers with access to the internal forge::
-
-   $ mkdir -p ~/code/roads
-   $ git clone ssh://gitolite@forge.b-com.com/roads/SANDBOX/pocnetconfschemaless.git
-
-For other developers::
+::
 
    $ mkdir -p ~/code/roads
    $ git clone https://github.com/b-com/pocnetconfschemaless.git
